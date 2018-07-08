@@ -16,9 +16,9 @@ namespace Bleatingsheep.Osu.PerformancePlus
             IReadOnlyList<string> userPatterns = new[]
             {
                 @"<th>Performance:</th><th>([\d,]+)pp</th>",
-                @"<td>Aim (Total):</td><td>([\d,]+)pp</td>",
-                @"<td>Aim (Jump):</td><td>([\d,]+)pp</td>",
-                @"<td>Aim (Flow):</td><td>([\d,]+)pp</td>",
+                @"<td>Aim \(Total\):</td><td>([\d,]+)pp</td>",
+                @"<td>Aim \(Jump\):</td><td>([\d,]+)pp</td>",
+                @"<td>Aim \(Flow\):</td><td>([\d,]+)pp</td>",
                 @"<td>Precision:</td><td>([\d,]+)pp</td>",
                 @"<td>Speed:</td><td>([\d,]+)pp</td>",
                 @"<td>Stamina:</td><td>([\d,]+)pp</td>",
@@ -27,14 +27,14 @@ namespace Bleatingsheep.Osu.PerformancePlus
 
             IReadOnlyList<string> beatmapPatterns = new[]
             {
-                @"<h3><strong>([\d,]+) stars</strong></h3>",
-                @"<p>([\d,]+) <small>stars</small></p>",
-                @"<p>([\d,]+) <small>stars</small></p>",
-                @"<p>([\d,]+) <small>stars</small></p>",
-                @"<p>([\d,]+) <small>stars</small></p>",
-                @"<p>([\d,]+) <small>stars</small></p>",
-                @"<p>([\d,]+) <small>stars</small></p>",
-                @"<p>([\d,]+) <small>stars</small></p>",
+                @"<h3><strong>([\d\.]+) stars</strong></h3>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
+                @"<p>([\d\.]+) <small>stars</small></p>",
             };
 
             UserRegices = userPatterns.Select(p => new Regex(p, RegexOptions.Compiled)).ToList();
@@ -44,7 +44,7 @@ namespace Bleatingsheep.Osu.PerformancePlus
 
         private UserPlus ParseHtmlToUserPlus(string html)
         {
-            const string userPattern = "<a href=\"https://osu.ppy.sh/u/(\\d+)\">([A-Za-z0-9\\-_]+?)</a>";
+            const string userPattern = "<a href=\"https://osu.ppy.sh/u/(\\d+)\">([A-Za-z0-9\\-_ ]+?)</a>";
             var userMatch = Regex.Match(html, userPattern, RegexOptions.Compiled);
             if (!userMatch.Success) return null;
 
@@ -85,6 +85,7 @@ namespace Bleatingsheep.Osu.PerformancePlus
             return ParseHtmlToUserPlus(html);
         }
 
+        /// <exception cref="ExceptionPlus"/>
         public async Task<IBeatmapPlus> GetBeatmapPlusAsync(int id)
         {
             string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/b/{0}/", id));
