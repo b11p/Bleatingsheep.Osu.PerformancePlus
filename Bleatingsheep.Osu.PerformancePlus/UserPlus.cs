@@ -28,24 +28,28 @@ namespace Bleatingsheep.Osu.PerformancePlus
             Accuracy = pp[7];
         }
 
-        public int Id { get; }
+        protected UserPlus()
+        {
+        }
 
-        public string Name { get; }
+        public int Id { get; protected set; }
 
-        public int Performance { get; }
+        public string Name { get; protected set; }
 
-        public int AimTotal { get; }
+        public int Performance { get; protected set; }
 
-        public int AimJump { get; }
+        public int AimTotal { get; protected set; }
 
-        public int AimFlow { get; }
+        public int AimJump { get; protected set; }
 
-        public int Precision { get; }
+        public int AimFlow { get; protected set; }
 
-        public int Speed { get; }
+        public int Precision { get; protected set; }
 
-        public int Stamina { get; }
+        public int Speed { get; protected set; }
 
-        public int Accuracy { get; }
+        public int Stamina { get; protected set; }
+
+        public int Accuracy { get; protected set; }
     }
 }

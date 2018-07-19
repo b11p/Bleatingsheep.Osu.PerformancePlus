@@ -26,22 +26,26 @@ namespace Bleatingsheep.Osu.PerformancePlus
             Accuracy = star[7];
         }
 
-        public int Id { get; }
+        protected BeatmapPlus()
+        {
+        }
 
-        public float Stars { get; }
+        public int Id { get; protected set; }
 
-        public float AimTotal { get; }
+        public float Stars { get; protected set; }
 
-        public float AimJump { get; }
+        public float AimTotal { get; protected set; }
 
-        public float AimFlow { get; }
+        public float AimJump { get; protected set; }
 
-        public float Precision { get; }
+        public float AimFlow { get; protected set; }
 
-        public float Speed { get; }
+        public float Precision { get; protected set; }
 
-        public float Stamina { get; }
+        public float Speed { get; protected set; }
 
-        public float Accuracy { get; }
+        public float Stamina { get; protected set; }
+
+        public float Accuracy { get; protected set; }
     }
 }
