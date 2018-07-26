@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Bleatingsheep.Osu.PerformancePlus
 {
@@ -83,6 +85,20 @@ namespace Bleatingsheep.Osu.PerformancePlus
         {
             string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/u/{0}/", id));
             return ParseHtmlToUserPlus(html);
+        }
+
+        /// <exception cref="ExceptionPlus"/>
+        /// <exception cref="ArgumentNullException"/>
+        public async Task<IUserPlus> GetUserPlusAsync(string username)
+        {
+            if (username == null)
+            {
+                throw new ArgumentNullException(nameof(username));
+            }
+
+            string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/u/{0}/", HttpUtility.UrlEncode(username)));
+            var userPlus = ParseHtmlToUserPlus(html);
+            return username.Equals(userPlus?.Name, StringComparison.OrdinalIgnoreCase) ? userPlus : null;
         }
 
         /// <exception cref="ExceptionPlus"/>
