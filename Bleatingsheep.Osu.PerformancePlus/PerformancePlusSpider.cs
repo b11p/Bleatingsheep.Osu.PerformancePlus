@@ -96,7 +96,7 @@ namespace Bleatingsheep.Osu.PerformancePlus
                 throw new ArgumentNullException(nameof(username));
             }
 
-            string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/u/{0}/", HttpUtility.UrlEncode(username)));
+            string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/u/{0}/", HttpUtility.UrlPathEncode(username)));
             var userPlus = ParseHtmlToUserPlus(html);
             return username.Equals(userPlus?.Name, StringComparison.OrdinalIgnoreCase) ? userPlus : null;
         }
