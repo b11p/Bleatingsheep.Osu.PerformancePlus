@@ -11,6 +11,7 @@ namespace Bleatingsheep.Osu.PerformancePlus
     public class PerformancePlusSpider : BasePlus, IPerformancePlus
     {
         private static readonly IReadOnlyList<Regex> UserRegices;
+        private static readonly Regex UserInfoRegex = new Regex("<a href=\"https://osu.ppy.sh/u/(\\d+)\">([A-Za-z0-9\\-_ \\[\\]]+?)</a>", RegexOptions.Compiled);
         private static readonly IReadOnlyList<Regex> BeatmapRegices;
 
         static PerformancePlusSpider()
@@ -39,15 +40,14 @@ namespace Bleatingsheep.Osu.PerformancePlus
                 @"<p>([\d\.]+) <small>stars</small></p>",
             };
 
-            UserRegices = userPatterns.Select(p => new Regex(p, RegexOptions.Compiled)).ToList();
+            UserRegices = userPatterns.Select(p => new Regex(p, RegexOptions.Compiled)).ToList().AsReadOnly();
 
-            BeatmapRegices = beatmapPatterns.Select(b => new Regex(b, RegexOptions.Compiled)).ToList();
+            BeatmapRegices = beatmapPatterns.Select(b => new Regex(b, RegexOptions.Compiled)).ToList().AsReadOnly();
         }
 
         private UserPlus ParseHtmlToUserPlus(string html)
         {
-            const string userPattern = "<a href=\"https://osu.ppy.sh/u/(\\d+)\">([A-Za-z0-9\\-_ ]+?)</a>";
-            var userMatch = Regex.Match(html, userPattern, RegexOptions.Compiled);
+            var userMatch = UserInfoRegex.Match(html);
             if (!userMatch.Success) return null;
 
             // Start at the end of last match
