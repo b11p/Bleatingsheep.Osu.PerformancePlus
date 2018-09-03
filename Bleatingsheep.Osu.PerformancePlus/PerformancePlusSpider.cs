@@ -48,7 +48,8 @@ namespace Bleatingsheep.Osu.PerformancePlus
         private UserPlus ParseHtmlToUserPlus(string html)
         {
             var userMatch = UserInfoRegex.Match(html);
-            if (!userMatch.Success) return null;
+            if (!userMatch.Success)
+                return null;
 
             // Start at the end of last match
             int index = userMatch.Index + userMatch.Length;
@@ -65,7 +66,8 @@ namespace Bleatingsheep.Osu.PerformancePlus
             for (int i = 0; i < result.Length; i++)
             {
                 var recentMatch = fixedRegices[i].Match(input: html, startat: index);
-                if (!recentMatch.Success) return null;
+                if (!recentMatch.Success)
+                    return null;
                 index = recentMatch.Index + recentMatch.Length;
                 result[i] = recentMatch.Groups[1].Value;
             }
@@ -79,6 +81,12 @@ namespace Bleatingsheep.Osu.PerformancePlus
             string[] result = Match(html, ref index, BeatmapRegices);
             return result == null ? null : new BeatmapPlus(beatmapId, result);
         }
+
+        /// <summary>
+        /// Some beatmap may cause 500 Internal Server Error in PP+.
+        /// Set <c>true</c> if you want to ignore these errors.
+        /// </summary>
+        public bool IgnoreInternalServerError { get; set; }
 
         /// <exception cref="ExceptionPlus"/>
         public async Task<IUserPlus> GetUserPlusAsync(int id)
@@ -104,7 +112,7 @@ namespace Bleatingsheep.Osu.PerformancePlus
         /// <exception cref="ExceptionPlus"/>
         public async Task<IBeatmapPlus> GetBeatmapPlusAsync(int id)
         {
-            string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/b/{0}/", id));
+            string html = await GetHtmlAsync(string.Format(CultureInfo.InvariantCulture, "https://syrin.me/pp+/b/{0}/", id), IgnoreInternalServerError);
             return ParseHtmlToBeatmapPlus(html, id);
         }
     }

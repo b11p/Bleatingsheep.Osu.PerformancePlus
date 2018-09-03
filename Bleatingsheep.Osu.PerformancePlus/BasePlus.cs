@@ -10,14 +10,19 @@ namespace Bleatingsheep.Osu.PerformancePlus
         {
         }
 
-        protected async Task<string> GetHtmlAsync(string url)
+        protected async Task<string> GetHtmlAsync(string url, bool ignore500 = false)
         {
             using (var httpClient = new HttpClient())
             {
-                string result;
+                string result = string.Empty;
                 try
                 {
                     result = await httpClient.GetStringAsync(url);
+                }
+                catch (HttpRequestException re) when (re.Message.Contains("500"))
+                {
+                    if (!ignore500)
+                        throw new ExceptionPlus("500 Internal Server Error.", re);
                 }
                 catch (Exception e)
                 {
