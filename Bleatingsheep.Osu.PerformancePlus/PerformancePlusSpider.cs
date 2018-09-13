@@ -85,8 +85,9 @@ namespace Bleatingsheep.Osu.PerformancePlus
         /// <summary>
         /// Some beatmap may cause 500 Internal Server Error in PP+.
         /// Set <c>true</c> if you want to ignore these errors.
+        /// The default value is <c>true</c>.
         /// </summary>
-        public bool IgnoreInternalServerError { get; set; }
+        public bool IgnoreInternalServerError { get; set; } = true;
 
         /// <exception cref="ExceptionPlus"/>
         public async Task<IUserPlus> GetUserPlusAsync(int id)

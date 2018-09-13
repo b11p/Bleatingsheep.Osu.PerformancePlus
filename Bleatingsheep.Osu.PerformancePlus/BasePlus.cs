@@ -22,7 +22,7 @@ namespace Bleatingsheep.Osu.PerformancePlus
                 catch (HttpRequestException re) when (re.Message.Contains("500"))
                 {
                     if (!ignore500)
-                        throw new ExceptionPlus("500 Internal Server Error.", re);
+                        throw new InternalServerErrorExceptionPlus("500 Internal Server Error.", re);
                 }
                 catch (Exception e)
                 {
